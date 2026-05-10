@@ -1,16 +1,65 @@
-# React + Vite
+# VoltSave ⚡
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**VoltSave** is a premium, modern EV Savings Calculator designed to help users transition to a sustainable future by visualizing the significant cost benefits of switching from petrol to electric vehicles.
 
-Currently, two official plugins are available:
+![VoltSave Dashboard](src/assets/hero.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌟 Key Features
 
-## React Compiler
+- **Intuitive Calculations**: Compare fuel expenses vs. energy costs based on your odometer reading.
+- **Smart EV Efficiency**: Automatically calculates kWh/100km efficiency based on battery capacity and actual range.
+- **Localized for India**: Default currency set to **INR (₹)** with realistic local rates for petrol and electricity.
+- **Premium UI/UX**: High-fidelity dark blue theme with glassmorphism, smooth animations (Framer Motion), and responsive design.
+- **Real-time Insights**: Live percentage-based savings insights and cost-per-km breakdowns.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **Framework**: [React 19](https://react.dev/)
+- **Build Tool**: [Vite 6](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Typography**: [Inter](https://fonts.google.com/specimen/Inter) & [Outfit](https://fonts.google.com/specimen/Outfit)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📊 How It Works
+
+### Calculations
+1. **Petrol Cost**: `(Distance / Mileage) * Petrol Price`
+2. **EV Efficiency**: `(Battery Capacity / Actual Range) * 100`
+3. **EV Cost**: `(Distance * (Efficiency / 100)) * Electricity Rate`
+4. **Total Savings**: `Petrol Cost - EV Cost`
+
+### Local Defaults
+- **Petrol**: ₹105/Litre
+- **Electricity**: ₹8/kWh
+- **Mileage**: 15 km/L
+
+## 🚀 Getting Started
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/0nlyjs/Ev-Savings-Calculator.git
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production**:
+   ```bash
+   npm run build
+   ```
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+Built with ❤️ for a greener planet.
