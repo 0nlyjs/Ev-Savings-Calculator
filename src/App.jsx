@@ -63,8 +63,8 @@ const ResultCard = ({ title, value, icon: Icon, color, subtitle }) => (
       className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 opacity-10 rounded-full ${color}`}
     />
     <div className="flex items-center gap-4 mb-4">
-      <div className={`p-3 rounded-lg ${color} bg-opacity-20`}>
-        <Icon className={color.replace("bg-", "text-")} size={24} />
+      <div className={`p-3 ${color} squircle flex items-center justify-center shadow-lg ${color.replace('bg-', 'shadow-')}/20`}>
+        <Icon className="text-white" size={24} />
       </div>
       <div>
         <h3 className="text-slate-400 text-sm font-medium">{title}</h3>
@@ -117,11 +117,12 @@ function App() {
     actualRange,
   ]);
 
-  const formatCurrency = (val) =>
+  const formatCurrency = (val, digits = 0) =>
     new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
-      maximumFractionDigits: 0,
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
     }).format(val);
 
   return (
@@ -246,7 +247,7 @@ function App() {
                 />
                 <InputField
                   label="Petrol/Diesel Mileage"
-                  icon={TrendingUp}
+                  icon={Fuel}
                   value={fuelMileage}
                   onChange={setFuelMileage}
                   unit="km/Litre"
@@ -353,14 +354,14 @@ function App() {
                 subtitle="Estimated Fuel Expense"
                 value={formatCurrency(fuelCost)}
                 icon={Fuel}
-                color="bg-rose-500"
+                color="bg-red-500"
               />
               <ResultCard
                 title="EV Cost"
                 subtitle="Estimated Energy Expense"
                 value={formatCurrency(evCost)}
                 icon={Zap}
-                color="bg-emerald-500"
+                color="bg-green-500"
               />
             </div>
 
@@ -425,7 +426,10 @@ function App() {
                       Savings per KM
                     </p>
                     <p className="text-lg font-bold text-slate-200">
-                      {formatCurrency(savings / (parseFloat(odometer) || 1))}
+                      {formatCurrency(
+                        savings / (parseFloat(odometer) || 1),
+                        2
+                      )}
                     </p>
                   </div>
                   <div className="p-4 rounded-xl bg-slate-800/30 border border-slate-700/50">
@@ -433,7 +437,10 @@ function App() {
                       Petrol/Diesel Cost per KM
                     </p>
                     <p className="text-lg font-bold text-slate-200">
-                      {formatCurrency(fuelCost / (parseFloat(odometer) || 1))}
+                      {formatCurrency(
+                        fuelCost / (parseFloat(odometer) || 1),
+                        2
+                      )}
                     </p>
                   </div>
                   <div className="p-4 rounded-xl bg-slate-800/30 border border-slate-700/50">
@@ -441,7 +448,10 @@ function App() {
                       EV Cost per KM
                     </p>
                     <p className="text-lg font-bold text-slate-200">
-                      {formatCurrency(evCost / (parseFloat(odometer) || 1))}
+                      {formatCurrency(
+                        evCost / (parseFloat(odometer) || 1),
+                        2
+                      )}
                     </p>
                   </div>
                 </div>
