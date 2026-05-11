@@ -80,22 +80,22 @@ const ResultCard = ({ title, value, icon: Icon, color, subtitle }) => (
 function App() {
   const [odometer, setOdometer] = useState("15000");
   const [electricityRate, setElectricityRate] = useState("8");
-  const [petrolPrice, setPetrolPrice] = useState("105");
-  const [petrolMileage, setPetrolMileage] = useState("15"); // km/l
+  const [fuelPrice, setFuelPrice] = useState("105");
+  const [fuelMileage, setFuelMileage] = useState("15"); // km/l
   const [batteryCapacity, setBatteryCapacity] = useState("30"); // kWh
   const [actualRange, setActualRange] = useState("200"); // km
   const [evEfficiency, setEvEfficiency] = useState(15); // kWh/100km
 
   const [savings, setSavings] = useState(0);
-  const [petrolCost, setPetrolCost] = useState(0);
+  const [fuelCost, setFuelCost] = useState(0);
   const [evCost, setEvCost] = useState(0);
 
   useEffect(() => {
     const battery = parseFloat(batteryCapacity) || 0;
     const range = parseFloat(actualRange) || 0;
     const dist = parseFloat(odometer) || 0;
-    const pMil = parseFloat(petrolMileage) || 0;
-    const pPrice = parseFloat(petrolPrice) || 0;
+    const pMil = parseFloat(fuelMileage) || 0;
+    const pPrice = parseFloat(fuelPrice) || 0;
     const eRate = parseFloat(electricityRate) || 0;
 
     // Calculate efficiency based on battery and range
@@ -105,14 +105,14 @@ function App() {
     const pCost = pMil > 0 ? (dist / pMil) * pPrice : 0;
     const eCost = dist * (efficiency / 100) * eRate;
 
-    setPetrolCost(pCost);
+    setFuelCost(pCost);
     setEvCost(eCost);
     setSavings(pCost - eCost);
   }, [
     odometer,
     electricityRate,
-    petrolPrice,
-    petrolMileage,
+    fuelPrice,
+    fuelMileage,
     batteryCapacity,
     actualRange,
   ]);
@@ -238,19 +238,19 @@ function App() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <InputField
-                  label="Petrol Price"
+                  label="Petrol/Diesel Price"
                   icon={IndianRupee}
-                  value={petrolPrice}
-                  onChange={setPetrolPrice}
+                  value={fuelPrice}
+                  onChange={setFuelPrice}
                   unit="per Litre"
                 />
                 <InputField
-                  label="Petrol Mileage"
+                  label="Petrol/Diesel Mileage"
                   icon={TrendingUp}
-                  value={petrolMileage}
-                  onChange={setPetrolMileage}
+                  value={fuelMileage}
+                  onChange={setFuelMileage}
                   unit="km/Litre"
-                  tooltip="Average mileage of the petrol vehicle you are comparing with."
+                  tooltip="Average mileage of the petrol/diesel vehicle you are comparing with."
                 />
               </div>
             </motion.div>
@@ -271,7 +271,7 @@ function App() {
                 <p className="text-xs text-slate-400 leading-relaxed">
                   Switching to an EV could save you approximately{" "}
                   <span className="text-slate-100 font-bold">
-                    {Math.round((savings / petrolCost) * 100)}%
+                    {Math.round((savings / fuelCost) * 100)}%
                   </span>{" "}
                   on fuel costs based on your current inputs.
                 </p>
@@ -309,7 +309,7 @@ function App() {
                 <p className="mt-4 text-slate-400 text-sm max-w-md">
                   This is the amount you would save over{" "}
                   {Number(odometer).toLocaleString()} km by driving an EV
-                  instead of a petrol vehicle.
+                  instead of a petrol/diesel vehicle.
                 </p>
               </div>
 
@@ -349,9 +349,9 @@ function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <ResultCard
-                title="Petrol Cost"
+                title="Petrol/Diesel Cost"
                 subtitle="Estimated Fuel Expense"
-                value={formatCurrency(petrolCost)}
+                value={formatCurrency(fuelCost)}
                 icon={Fuel}
                 color="bg-rose-500"
               />
@@ -379,7 +379,7 @@ function App() {
                   <div className="flex items-center gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-rose-500" />
                     <span className="text-[10px] text-slate-400 uppercase">
-                      Petrol
+                      Petrol/Diesel
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -398,7 +398,7 @@ function App() {
                       Energy Efficiency
                     </span>
                     <span className="text-slate-100 font-bold">
-                      {petrolMileage} km/L vs {evEfficiency} kWh/100km
+                      {fuelMileage} km/L vs {evEfficiency} kWh/100km
                     </span>
                   </div>
                   <div className="relative h-3 bg-slate-800 rounded-full overflow-hidden">
@@ -430,10 +430,10 @@ function App() {
                   </div>
                   <div className="p-4 rounded-xl bg-slate-800/30 border border-slate-700/50">
                     <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">
-                      Petrol Cost per KM
+                      Petrol/Diesel Cost per KM
                     </p>
                     <p className="text-lg font-bold text-slate-200">
-                      {formatCurrency(petrolCost / (parseFloat(odometer) || 1))}
+                      {formatCurrency(fuelCost / (parseFloat(odometer) || 1))}
                     </p>
                   </div>
                   <div className="p-4 rounded-xl bg-slate-800/30 border border-slate-700/50">
