@@ -35,7 +35,13 @@ const InputField = ({ label, icon: Icon, value, onChange, unit, tooltip }) => (
       <input
         type="number"
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
+        onChange={(e) => {
+          let val = e.target.value;
+          if (val.length > 1 && val.startsWith('0') && val[1] !== '.') {
+            val = val.replace(/^0+/, '');
+          }
+          onChange(val);
+        }}
         className="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500/50 focus:border-sky-500 transition-all placeholder-slate-600"
         placeholder="0.00"
       />
@@ -69,12 +75,12 @@ const ResultCard = ({ title, value, icon: Icon, color, subtitle }) => (
 );
 
 function App() {
-  const [odometer, setOdometer] = useState(15000);
-  const [electricityRate, setElectricityRate] = useState(8);
-  const [petrolPrice, setPetrolPrice] = useState(105);
-  const [petrolMileage, setPetrolMileage] = useState(15); // km/l
-  const [batteryCapacity, setBatteryCapacity] = useState(30); // kWh
-  const [actualRange, setActualRange] = useState(200); // km
+  const [odometer, setOdometer] = useState('15000');
+  const [electricityRate, setElectricityRate] = useState('8');
+  const [petrolPrice, setPetrolPrice] = useState('105');
+  const [petrolMileage, setPetrolMileage] = useState('15'); // km/l
+  const [batteryCapacity, setBatteryCapacity] = useState('30'); // kWh
+  const [actualRange, setActualRange] = useState('200'); // km
   const [evEfficiency, setEvEfficiency] = useState(15); // kWh/100km
 
   const [savings, setSavings] = useState(0);
@@ -82,12 +88,19 @@ function App() {
   const [evCost, setEvCost] = useState(0);
 
   useEffect(() => {
+    const battery = parseFloat(batteryCapacity) || 0;
+    const range = parseFloat(actualRange) || 0;
+    const dist = parseFloat(odometer) || 0;
+    const pMil = parseFloat(petrolMileage) || 0;
+    const pPrice = parseFloat(petrolPrice) || 0;
+    const eRate = parseFloat(electricityRate) || 0;
+
     // Calculate efficiency based on battery and range
-    const efficiency = (batteryCapacity / actualRange) * 100;
+    const efficiency = range > 0 ? (battery / range) * 100 : 0;
     setEvEfficiency(efficiency);
 
-    const pCost = (odometer / petrolMileage) * petrolPrice;
-    const eCost = (odometer * (efficiency / 100)) * electricityRate;
+    const pCost = pMil > 0 ? (dist / pMil) * pPrice : 0;
+    const eCost = (dist * (efficiency / 100)) * eRate;
     
     setPetrolCost(pCost);
     setEvCost(eCost);
@@ -261,7 +274,7 @@ function App() {
                   <span className="text-slate-400 font-medium">INR</span>
                 </div>
                 <p className="mt-4 text-slate-400 text-sm max-w-md">
-                  This is the amount you would save over {odometer.toLocaleString()} km by driving an EV instead of a petrol vehicle.
+                  This is the amount you would save over {Number(odometer).toLocaleString()} km by driving an EV instead of a petrol vehicle.
                 </p>
               </div>
               
@@ -345,19 +358,19 @@ function App() {
                   <div className="p-4 rounded-xl bg-slate-800/30 border border-slate-700/50">
                     <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Savings per KM</p>
                     <p className="text-lg font-bold text-slate-200">
-                      {formatCurrency(savings / odometer)}
+                      {formatCurrency(savings / (parseFloat(odometer) || 1))}
                     </p>
                   </div>
                   <div className="p-4 rounded-xl bg-slate-800/30 border border-slate-700/50">
                     <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Petrol Cost per KM</p>
                     <p className="text-lg font-bold text-slate-200">
-                      {formatCurrency(petrolCost / odometer)}
+                      {formatCurrency(petrolCost / (parseFloat(odometer) || 1))}
                     </p>
                   </div>
                   <div className="p-4 rounded-xl bg-slate-800/30 border border-slate-700/50">
                     <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">EV Cost per KM</p>
                     <p className="text-lg font-bold text-slate-200">
-                      {formatCurrency(evCost / odometer)}
+                      {formatCurrency(evCost / (parseFloat(odometer) || 1))}
                     </p>
                   </div>
                 </div>
